@@ -1,0 +1,86 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #222;
+}
+
+.logo-img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+/* 네비게이션 메뉴 스타일 */
+.nav-menu {
+    display: flex;
+    gap: 30px; 
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-menu li {
+    display: inline;
+}
+
+/* Link 스타일 */
+.nav-menu li a {
+    text-decoration: none;
+    color: #222;
+    font-size: 16px;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-menu li a:hover, a:focus {
+    color: #008080;
+}
+
+/* 우측 버튼 영역 */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* QnA 버튼 */
+.qna-btn {
+    background-color: #facc93;
+    color: #000000;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.qna-btn:hover {
+    background-color: #FF8C00;
+    color: #ffffff
+}
+
+/* 로그인 버튼 */
+.login-btn {
+    background-color: white;
+    border: 1px solid #222;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.login-btn:hover {
+    background-color: #f0f0f0;
+}
