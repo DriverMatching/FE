@@ -1,8 +1,16 @@
+/* 전체 요소 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 메인 폼 스타일 */
 .matching-form {
-    width: 100%;
-    max-width: 500px;
-    margin: 20px auto;
-    padding: 20px;
+    width: 90%;
+    max-width: 900px; /* 최대 너비 설정 */
+    margin: 30px auto;
+    padding: 25px;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -10,63 +18,86 @@
 
 h2 {
     text-align: center;
-    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 25px;
 }
 
+/* 한 줄 배치 스타일 */
+.form-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+/* 개별 섹션 크기 조절 */
 .form-section {
-    margin-bottom: 20px;
+    flex: 1;
+    min-width: 280px;
+    margin-bottom: 10px;
 }
 
 .form-section label {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
-
+/* 입력 필드 스타일 */
 .input-box {
-    width: 95%;
-    padding: 12px;
-    margin-bottom: 10px;
+    width: 100%;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: #ffffff; 
     font-size: 14px;
-    transition: border 0.3s ease-in-out;
+    background-color: #f9f9f9;
 }
 
-.input-box:focus {
-    border: 2px solid #008080; 
+/* 작은 입력 필드 스타일 */
+.input-box.small {
+    flex: 1;
+    min-width: 130px;
 }
 
+/* 인라인 입력칸 (이름 & 연락처, 무게 & 수량) */
 .inline-inputs {
     display: flex;
     gap: 10px;
 }
 
-.inline-inputs .input-box.small {
-    flex: 1;
+/* 라디오 버튼 그룹 정렬 */
+.radio-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+/* 퀵 접수 버튼 스타일 */
 .submit-btn {
+    display: block;
     width: 100%;
-    padding: 12px;
-    margin-top: 10px;
+    padding: 14px;
     background-color: #FF8C00;
     color: white;
     border: none;
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
-    transition: background 0.3s ease-in-out;
+    margin-top: 25px;
+    text-align: center;
+    transition: background 0.3s;
 }
 
 .submit-btn:hover {
-    background-color: #E67E00;
-    font-weight: bolder;
-}
-
-.input-box:hover {
-    background-color: #f5fbfb; 
+    background-color: #e67e00;
 }

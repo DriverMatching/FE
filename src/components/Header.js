@@ -13,7 +13,6 @@ function Header() {
         </div>
         <nav>
             <ul className="nav-menu">
-                <li><Link to="/">홈</Link></li>
                 <li><Link to="/matchingForm">퀵 접수하기</Link></li>
                 <li><Link to="/usageHistory">이용내역</Link></li>
             </ul>
