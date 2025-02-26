@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // 페이지 이동을 위한 라우터 추가
+import { useNavigate } from "react-router-dom"; 
 import "./styles.css";
 
 function MatchingForm() {
-    const navigate = useNavigate(); // 페이지 이동 함수
+    const navigate = useNavigate();
 
-    // 출발지 & 도착지 상태 관리
     const [startName, setStartName] = useState(""); 
     const [startPhone, setStartPhone] = useState(""); 
     const [startAddress, setStartAddress] = useState("");
@@ -17,28 +16,25 @@ function MatchingForm() {
     const [endAddress, setEndAddress] = useState("");
     const [endDetailAddress, setEndDetailAddress] = useState("");
 
-    const [itemTypeNm, setItemTypeNm] = useState(""); // 물품 종류
-    const [isRefrigerated, setIsRefrigerated] = useState(0); // 냉장/냉동 여부 (0: X, 1: O)
-    const [isFragile, setIsFragile] = useState(0); // 파손물 여부 (0: X, 1: O)
-    const [weight, setWeight] = useState(""); // 물건 무게
-    const [quantity, setQuantity] = useState(""); // 물건 수량
+    const [itemTypeNm, setItemTypeNm] = useState(""); 
+    const [isRefrigerated, setIsRefrigerated] = useState(false);
+    const [isFragile, setIsFragile] = useState(false);
+    const [isHazardous, setIsHazardous] = useState(false);
+    const [weight, setWeight] = useState(""); 
+    const [quantity, setQuantity] = useState("");
 
-    // Daum 주소 검색 함수
     const searchAddress = (setAddress) => {
         if (!window.daum || !window.daum.Postcode) {
             alert("Daum 주소 API가 로드되지 않았습니다. 새로고침해 주세요.");
             return;
         }
-
         new window.daum.Postcode({
             oncomplete: (data) => {
-                let fullAddress = data.address;
-                setAddress(fullAddress);
+                setAddress(data.address);
             },
         }).open();
     };
 
-    // 숫자 입력 필드 제한 (연락처, 무게, 수량)
     const handleNumberInput = (e, setState) => {
         const value = e.target.value;
         if (/^\d*$/.test(value)) {
@@ -46,7 +42,6 @@ function MatchingForm() {
         }
     };
 
-    // FastAPI로 데이터 전송 (퀵 접수)
     const handleSubmit = async () => {
         const requestData = {
             start_name: startName,
@@ -58,22 +53,31 @@ function MatchingForm() {
             end_address: endAddress,
             end_detail: endDetailAddress,
             item_type_nm: itemTypeNm,
-            is_refrigerated: isRefrigerated ? 1 : 0,
-            is_fragile: isFragile ? 1 : 0,
-            weight: weight,
-            quantity: quantity
+            cold_storage: isRefrigerated ? 1 : 0,
+            fragile_item: isFragile ? 1 : 0,
+            hazardous_material: isHazardous ? 1 : 0,
+            weight: parseFloat(weight) || 0,
+            quantity: parseInt(quantity, 10) || 0
         };
 
         try {
-            const response = await axios.post("http://127.0.0.1:8000/match-driver", requestData);
-            const matchedDriver = response.data;
-
-            alert(`기사 매칭 완료! 기사 ID: ${matchedDriver.driver_id}`);
-        
-            // 기사 매칭 결과 페이지로 이동
-            navigate(`/matching-process/${matchedDriver.driver_id}`);
+            const response = await axios.post(
+                "http://127.0.0.1:8000/match-driver",
+                requestData,
+                { headers: { "Content-Type": "application/json" } }
+            );
+    
+            console.log("서버 응답:", response.data);
+            
+            if (response.data.matchedDriver) {
+                // 기사 매칭이 성공하면 MatchingResult.js로 이동
+                navigate("/matching-result", { state: { matchedDriver: response.data.matchedDriver } });
+            } else {
+                alert("적합한 기사를 찾을 수 없습니다.");
+            }
         } catch (error) {
             console.error("매칭 실패:", error);
+            alert("매칭 요청 중 오류 발생!");
         }
     };
 
@@ -127,20 +131,12 @@ function MatchingForm() {
                         <input type="text" value={quantity} onChange={(e) => handleNumberInput(e, setQuantity)} placeholder="수량" className="input-box small" /> 개
                     </div>
                 </div>
+            </div>
 
-                <div className="form-section">
-                    <label>냉장/냉동 여부</label>
-                    <div>
-                        <label><input type="checkbox" value="1" checked={isRefrigerated === 1} onChange={() => setIsRefrigerated(isRefrigerated === 1 ? 0 : 1)} /> 예</label>
-                    </div>
-                </div>
-
-                <div className="form-section">
-                    <label>파손물 여부</label>
-                    <div>
-                        <label><input type="checkbox" value="1" checked={isFragile === 1} onChange={() => setIsFragile(isFragile === 1 ? 0 : 1)} /> 예</label>
-                    </div>
-                </div>
+            <div className="checkbox-group">
+                <label><input type="checkbox" checked={isRefrigerated} onChange={() => setIsRefrigerated(!isRefrigerated)} /> 냉장/냉동 식품</label>
+                <label><input type="checkbox" checked={isFragile} onChange={() => setIsFragile(!isFragile)} /> 파손물</label>
+                <label><input type="checkbox" checked={isHazardous} onChange={() => setIsHazardous(!isHazardous)} /> 위험물</label>
             </div>
 
             <button className="submit-btn" onClick={handleSubmit}>퀵 접수하기</button>
