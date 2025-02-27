@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; 
+import MatchingResult from "./MatchingResult"; // 모달로 띄울 컴포넌트
 import "./styles.css";
 
 function MatchingForm() {
-    const navigate = useNavigate();
 
     const [startName, setStartName] = useState(""); 
     const [startPhone, setStartPhone] = useState(""); 
@@ -34,6 +33,9 @@ function MatchingForm() {
             },
         }).open();
     };
+    
+    const [matchedDriver, setMatchedDriver] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
     const handleNumberInput = (e, setState) => {
         const value = e.target.value;
@@ -43,35 +45,20 @@ function MatchingForm() {
     };
 
     const handleSubmit = async () => {
-        const requestData = {
-            start_name: startName,
-            start_phone: startPhone,
-            start_address: startAddress,
-            start_detail: startDetailAddress,
-            end_name: endName,
-            end_phone: endPhone,
-            end_address: endAddress,
-            end_detail: endDetailAddress,
-            item_type_nm: itemTypeNm,
-            cold_storage: isRefrigerated ? 1 : 0,
-            fragile_item: isFragile ? 1 : 0,
-            hazardous_material: isHazardous ? 1 : 0,
-            weight: parseFloat(weight) || 0,
-            quantity: parseInt(quantity, 10) || 0
-        };
-
         try {
-            const response = await axios.post(
-                "http://127.0.0.1:8000/match-driver",
-                requestData,
-                { headers: { "Content-Type": "application/json" } }
-            );
-    
-            console.log("서버 응답:", response.data);
-            
+            const response = await axios.post("http://127.0.0.1:8000/match-driver", {
+                start_address: startAddress,
+                end_address: endAddress,
+                cold_storage: isRefrigerated ? 1 : 0,
+                fragile_item: isFragile ? 1 : 0,
+                hazardous_material: isHazardous ? 1 : 0,
+                weight: parseFloat(weight) || 0,
+                quantity: parseInt(quantity, 10) || 0
+            });
+
             if (response.data.matchedDriver) {
-                // 기사 매칭이 성공하면 MatchingResult.js로 이동
-                navigate("/matching-result", { state: { matchedDriver: response.data.matchedDriver } });
+                setMatchedDriver(response.data.matchedDriver);
+                setShowModal(true);
             } else {
                 alert("적합한 기사를 찾을 수 없습니다.");
             }
@@ -140,6 +127,25 @@ function MatchingForm() {
             </div>
 
             <button className="submit-btn" onClick={handleSubmit}>퀵 접수하기</button>
+        
+            {showModal && (
+                <MatchingResult 
+                    matchedDriver={matchedDriver} 
+                    customerRequest={{
+                        start_address: startAddress,
+                        start_detail: startDetailAddress,
+                        end_address: endAddress,
+                        end_detail: endDetailAddress,
+                        item_type_nm: itemTypeNm,
+                        cold_storage: isRefrigerated ? 1 : 0,
+                        fragile_item: isFragile ? 1 : 0,
+                        hazardous_material: isHazardous ? 1 : 0,
+                        weight: parseFloat(weight) || 0,
+                        quantity: parseInt(quantity, 10) || 0
+                    }}
+                    onClose={() => setShowModal(false)}
+                />
+            )}
         </div>
     );
 }

@@ -1,27 +1,48 @@
-.matching-container {
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 1200px;
-    margin: 10px auto;
-    text-align: center;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* 반투명 검은 배경 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
 }
 
-.matching-content {
+/* 모달 박스 */
+.modal {
+    background-color: white;
+    width: 50%;
+    min-width: 450px;
+    max-width: 700px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+}
+
+.modal-content {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .driver-table {
+    margin: 2%;;
     width: 45%;
+    height: 70%;
     border-collapse: collapse;
     text-align: center;
-    font-size: 16px; /* 글씨 키움 */
+    font-size: 18px; 
 }
 
 .driver-table th, .driver-table td {
-    padding: 8px;
+    padding: 6px;
     border: 1px solid #ddd;
-    line-height: 1.2; /* td 높이 줄임 */
+    line-height: 1.1; 
 }
 
 .driver-table th {
@@ -29,6 +50,7 @@
     font-weight: bold;
 }
 
+/* 지도 스타일 */
 .map-container {
     width: 50%;
     height: 400px;
@@ -36,29 +58,38 @@
     border-radius: 5px;
 }
 
+/* 버튼 스타일 */
 .button-container {
-    margin-top: 20px;
-    text-align: center;
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
 }
 
 .button-container button {
-    padding: 10px 20px;
-    margin: 5px;
+    padding: 12px 20px;
+    font-size: 16px;
     border: none;
     cursor: pointer;
+    border-radius: 5px;
+}
+
+.button-container button:first-child {
+    background-color: #ccc;
 }
 
 .button-container button:last-child {
     background-color: #4CAF50;
     color: white;
-    border-radius: 5px;
 }
 
+/* 마커 스타일 (크기 조정 및 둥글게) */
 .custom-marker {
-    font-size: 12px;  /* 글씨 크기 조정 */
+    font-size: 14px; 
     font-weight: bold;
     color: white;
-    padding: 5px 10px;
-    border-radius: 50%;
+    padding: 8px 12px;
+    border-radius: 12px;
     text-align: center;
+    white-space: nowrap;
 }
