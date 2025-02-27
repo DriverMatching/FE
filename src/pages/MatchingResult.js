@@ -1,6 +1,8 @@
 import React, { useEffect, useCallback } from "react";
 import "./resultStyles.css"; 
 import axios from "axios"; // 백엔드 API 요청을 위한 axios 추가
+const backend_server = "http://52.79.188.179:8000/match-driver"
+const backend_test = "http://127.0.0.1:8000/match-driver"
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyAUNrCgGKTQuvgmUPMcCmZEjT18IMwEpBw";
 const MAP_ID = "2d23b5a53eb8b295"; // Google Cloud에서 생성한 mapId 입력
@@ -21,7 +23,7 @@ function MatchingResult({ matchedDriver, customerRequest, onClose }) {
         console.log("백엔드로 전송하는 데이터:", requestData);  // 확인용 로그 추가
 
         try {
-            const response = await fetch("http://127.0.0.1:8000/save-matching", {
+            const response = await fetch(backend_server, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
